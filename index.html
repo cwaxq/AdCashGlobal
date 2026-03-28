@@ -3,49 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AdCashGlobal</title>
+    <title>AdCashGlobal | Dynamic Auth</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        
-        body {
-            background-color: #0d1117;
-            font-family: 'Inter', sans-serif;
-            color: white;
-        }
-
-        .premium-bg {
-            background: radial-gradient(circle at top right, #1e293b, #0d1117);
-        }
-
-        .card-glass {
-            background: #161b22;
-            border: 1px solid #30363d;
-        }
-
-        .btn-green {
-            background-color: #00e676;
-            color: #000;
-            transition: all 0.3s ease;
-        }
-
-        .btn-green:hover {
-            background-color: #00c853;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 230, 118, 0.2);
-        }
-
-        .social-btn {
-            background-color: #ffffff;
-            color: #000;
-            transition: 0.3s;
-        }
-
-        .social-btn:hover {
-            background-color: #f0f0f0;
-        }
-
+        body { background-color: #0d1117; font-family: 'Inter', sans-serif; color: white; }
+        .premium-bg { background: radial-gradient(circle at top right, #1e293b, #0d1117); }
+        .card-glass { background: #161b22; border: 1px solid #30363d; }
+        .btn-green { background-color: #00e676; color: #000; transition: 0.3s; }
+        .btn-green:hover { background-color: #00c853; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 230, 118, 0.2); }
+        .social-btn { background-color: #ffffff; color: #000; transition: 0.3s; }
         .hidden { display: none; }
     </style>
 </head>
@@ -56,52 +24,30 @@
     </div>
 
     <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        
         <div class="space-y-8 hidden lg:block">
-            <h1 class="text-5xl font-extrabold leading-tight">
-                Get <span class="text-[#00e676]">paid</span> for watching ads & videos
-            </h1>
-            <p class="text-slate-400 text-lg">Earn up to <span class="text-white font-bold">$5.00</span> per video. Join 100,000+ earners globally.</p>
-            
-            <div class="grid grid-cols-3 gap-4">
-                <div class="card-glass p-4 rounded-xl text-center">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Netflix_logo.svg" class="h-6 mx-auto mb-3" alt="Netflix">
-                    <p class="text-xs text-slate-400">Up to $10.00</p>
-                </div>
-                <div class="card-glass p-4 rounded-xl text-center border-t-2 border-[#00e676]">
-                    <div class="text-[#00e676] mb-2"><i class="fas fa-play-circle text-2xl"></i></div>
-                    <p class="text-xs text-slate-400 font-bold">Video Ads</p>
-                    <p class="text-[10px] text-yellow-500">★★★★★</p>
-                </div>
-                <div class="card-glass p-4 rounded-xl text-center">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg" class="h-6 mx-auto mb-3" alt="TikTok">
-                    <p class="text-xs text-slate-400">Up to $2.00</p>
-                </div>
-            </div>
-
+            <h1 class="text-5xl font-extrabold leading-tight">Get <span class="text-[#00e676]">paid</span> for watching ads & videos</h1>
+            <p class="text-slate-400 text-lg">Join 100,000+ earners globally.</p>
             <div class="flex items-center gap-4 pt-4">
-                <span class="text-sm text-slate-500">See our reviews on</span>
                 <span class="bg-[#00b67a] text-white px-2 py-1 rounded text-xs font-bold">★ Trustpilot</span>
             </div>
         </div>
 
         <div class="card-glass p-8 rounded-2xl w-full max-w-md mx-auto">
-            
             <div class="flex justify-between mb-8 border-b border-gray-800 pb-4">
                 <button onclick="toggleForm('signup')" id="tab-signup" class="text-xl font-bold text-white border-b-2 border-[#00e676] pb-2">Sign Up</button>
                 <button onclick="toggleForm('login')" id="tab-login" class="text-xl font-bold text-gray-500 pb-2">Login</button>
             </div>
 
             <form id="signup-form" class="space-y-5">
-                <input type="text" placeholder="Username" class="w-full bg-[#0d1117] border border-gray-700 p-3 rounded-lg outline-none focus:border-[#00e676]">
-                <input type="email" placeholder="Email Address" class="w-full bg-[#0d1117] border border-gray-700 p-3 rounded-lg outline-none focus:border-[#00e676]">
-                <input type="password" placeholder="Password" class="w-full bg-[#0d1117] border border-gray-700 p-3 rounded-lg outline-none focus:border-[#00e676]">
+                <input type="text" id="reg-name" placeholder="Username" class="w-full bg-[#0d1117] border border-gray-700 p-3 rounded-lg outline-none focus:border-[#00e676]" required>
+                <input type="email" id="reg-email" placeholder="Email Address" class="w-full bg-[#0d1117] border border-gray-700 p-3 rounded-lg outline-none focus:border-[#00e676]" required>
+                <input type="password" id="reg-password" placeholder="Password" class="w-full bg-[#0d1117] border border-gray-700 p-3 rounded-lg outline-none focus:border-[#00e676]" required>
                 <button type="submit" class="w-full btn-green font-bold py-3 rounded-lg uppercase tracking-wide">Start earning now</button>
             </form>
 
             <form id="login-form" class="space-y-5 hidden">
-                <input type="email" placeholder="Email Address" class="w-full bg-[#0d1117] border border-gray-700 p-3 rounded-lg outline-none focus:border-[#00e676]">
-                <input type="password" placeholder="Password" class="w-full bg-[#0d1117] border border-gray-700 p-3 rounded-lg outline-none focus:border-[#00e676]">
+                <input type="email" id="login-email" placeholder="Email Address" class="w-full bg-[#0d1117] border border-gray-700 p-3 rounded-lg outline-none focus:border-[#00e676]" required>
+                <input type="password" id="login-password" placeholder="Password" class="w-full bg-[#0d1117] border border-gray-700 p-3 rounded-lg outline-none focus:border-[#00e676]" required>
                 <button type="submit" class="w-full btn-green font-bold py-3 rounded-lg uppercase tracking-wide">Login to account</button>
             </form>
 
@@ -112,21 +58,71 @@
             </div>
 
             <div class="space-y-3">
-                <button class="w-full social-btn flex items-center justify-center gap-3 py-2 rounded-lg font-semibold">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-5"> Sign up with Google
-                </button>
-                <button class="w-full bg-[#1877f2] text-white flex items-center justify-center gap-3 py-2 rounded-lg font-semibold">
-                    <i class="fab fa-facebook"></i> Sign up with Facebook
+                <button id="google-btn" class="w-full social-btn flex items-center justify-center gap-3 py-2 rounded-lg font-semibold">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-5"> Continue with Google
                 </button>
             </div>
-
-            <p class="text-center text-xs text-gray-600 mt-6">
-                <span class="text-[#00e676]">96,649+</span> sign ups in the last 24 hours
-            </p>
         </div>
     </div>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // 🚨 YOUR FIREBASE CONFIG (Firebase Console থেকে কপি করে এখানে বসান)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        // Check if user is already logged in
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                window.location.href = "dashboard.html"; // লগইন থাকলে ড্যাশবোর্ডে নিয়ে যাবে
+            }
+        });
+
+        // 1. Sign Up Logic
+        document.getElementById('signup-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => alert("Account Created Successfully!"))
+                .catch((error) => alert(error.message));
+        });
+
+        // 2. Login Logic
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => alert("Logged In Successfully!"))
+                .catch((error) => alert(error.message));
+        });
+
+        // 3. Google Login Logic
+        document.getElementById('google-btn').addEventListener('click', () => {
+            signInWithPopup(auth, googleProvider)
+                .then((result) => alert("Google Login Successful!"))
+                .catch((error) => alert(error.message));
+        });
+    </script>
+
     <script>
+        // Form Toggle Function
         function toggleForm(type) {
             const signupForm = document.getElementById('signup-form');
             const loginForm = document.getElementById('login-form');
@@ -134,19 +130,13 @@
             const tabLogin = document.getElementById('tab-login');
 
             if (type === 'login') {
-                signupForm.classList.add('hidden');
-                loginForm.classList.remove('hidden');
+                signupForm.classList.add('hidden'); loginForm.classList.remove('hidden');
                 tabLogin.classList.add('border-b-2', 'border-[#00e676]', 'text-white');
-                tabLogin.classList.remove('text-gray-500');
                 tabSignup.classList.remove('border-b-2', 'border-[#00e676]', 'text-white');
-                tabSignup.classList.add('text-gray-500');
             } else {
-                loginForm.classList.add('hidden');
-                signupForm.classList.remove('hidden');
+                loginForm.classList.add('hidden'); signupForm.classList.remove('hidden');
                 tabSignup.classList.add('border-b-2', 'border-[#00e676]', 'text-white');
-                tabSignup.classList.remove('text-gray-500');
                 tabLogin.classList.remove('border-b-2', 'border-[#00e676]', 'text-white');
-                tabLogin.classList.add('text-gray-500');
             }
         }
     </script>
