@@ -3,122 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AdCashGlobal | Premium Earning Platform</title>
+    <title>AdCashGlobal | Secure Auth</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body { 
-            background-color: #0d1117; 
-            font-family: 'Inter', sans-serif; 
-            color: white; 
-            margin: 0;
-            overflow-x: hidden;
-        }
-        .premium-bg { 
-            background: radial-gradient(circle at top right, #1e293b, #0d1117); 
-            min-height: 100vh;
-        }
-        .card-glass { 
-            background: rgba(22, 27, 34, 0.8); 
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(48, 54, 61, 0.8); 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-        .btn-green { 
-            background: linear-gradient(135deg, #00e676, #00c853);
-            color: #000; 
-            transition: all 0.3s ease; 
-            font-weight: 700; 
-        }
-        .btn-green:hover:not(:disabled) { 
-            transform: translateY(-3px); 
-            box-shadow: 0 10px 20px rgba(0, 230, 118, 0.3);
-            filter: brightness(1.1);
-        }
-        .btn-green:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        .social-btn { 
-            background-color: #ffffff; 
-            color: #000; 
-            transition: 0.3s; 
-            border: 1px solid transparent;
-        }
-        .social-btn:hover {
-            background-color: #f8f9fa;
-            border-color: #00e676;
-        }
-        .input-field {
-            background: #0d1117;
-            border: 1px solid #30363d;
-            transition: 0.3s;
-        }
-        .input-field:focus {
-            border-color: #00e676;
-            box-shadow: 0 0 0 2px rgba(0, 230, 118, 0.1);
-        }
+        body { background-color: #0d1117; font-family: 'Inter', sans-serif; color: white; margin: 0; overflow-x: hidden; }
+        .premium-bg { background: radial-gradient(circle at top right, #1e293b, #0d1117); min-height: 100vh; }
+        .card-glass { background: rgba(22, 27, 34, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(48, 54, 61, 0.8); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .btn-green { background: linear-gradient(135deg, #00e676, #00c853); color: #000; transition: 0.3s; font-weight: 700; }
+        .btn-green:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 230, 118, 0.3); }
+        .btn-green:disabled { opacity: 0.6; cursor: not-allowed; }
+        .input-field { background: #0d1117; border: 1px solid #30363d; color: white; transition: 0.3s; }
+        .input-field:focus { border-color: #00e676; outline: none; }
         .hidden { display: none; }
     </style>
 </head>
 <body class="premium-bg flex flex-col items-center justify-center p-4">
 
-    <div class="mb-10 text-4xl font-extrabold flex items-center gap-3 tracking-tight">
-        <div class="bg-[#00e676] p-2 rounded-lg text-black">
-            <i class="fas fa-bolt"></i>
-        </div>
+    <div class="mb-10 text-4xl font-extrabold flex items-center gap-3">
+        <div class="bg-[#00e676] p-2 rounded-lg text-black"><i class="fas fa-bolt"></i></div>
         <span>AdCash<span class="text-[#00e676]">Global</span></span>
     </div>
 
-    <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <div class="space-y-8 hidden lg:block">
-            <h1 class="text-6xl font-black leading-tight">
-                Turn Your <span class="text-[#00e676]">Time</span> <br> Into Digital <span class="text-[#00e676]">Gold</span>
-            </h1>
-            <p class="text-slate-400 text-xl max-w-md">
-                Join 50,000+ users earning daily rewards through simple tasks, lucky spins, and high-paying ads.
-            </p>
-            <div class="flex gap-6 text-sm font-semibold text-slate-300">
-                <span><i class="fas fa-check-circle text-[#00e676] mr-2"></i>Instant Withdraw</span>
-                <span><i class="fas fa-check-circle text-[#00e676] mr-2"></i>Global Access</span>
-            </div>
+    <div class="card-glass p-8 rounded-3xl w-full max-w-md shadow-2xl">
+        <div class="flex justify-around mb-8 border-b border-gray-800 pb-4">
+            <button id="tab-signup-btn" class="text-lg font-bold text-white border-b-2 border-[#00e676] pb-2">Sign Up</button>
+            <button id="tab-login-btn" class="text-lg font-bold text-gray-500 pb-2">Login</button>
         </div>
 
-        <div class="card-glass p-10 rounded-3xl w-full max-w-md mx-auto">
-            <div class="flex justify-around mb-10 relative">
-                <button id="tab-signup-btn" class="text-lg font-bold text-white transition-all pb-2 border-b-2 border-[#00e676]">Sign Up</button>
-                <button id="tab-login-btn" class="text-lg font-bold text-gray-500 transition-all pb-2 hover:text-white">Login</button>
-            </div>
+        <form id="signup-form" class="space-y-5">
+            <input type="text" id="reg-name" placeholder="Full Name" class="input-field w-full p-4 rounded-xl" required>
+            <input type="email" id="reg-email" placeholder="Email Address" class="input-field w-full p-4 rounded-xl" required>
+            <input type="password" id="reg-password" placeholder="Password (Min 6 chars)" class="input-field w-full p-4 rounded-xl" minlength="6" required>
+            <button type="submit" id="signup-btn" class="w-full btn-green py-4 rounded-xl uppercase tracking-widest text-sm">Create Account</button>
+        </form>
 
-            <form id="signup-form" class="space-y-6">
-                <input type="text" id="reg-name" placeholder="Full Name" class="input-field w-full p-4 rounded-xl outline-none text-white" required>
-                <input type="email" id="reg-email" placeholder="Email Address" class="input-field w-full p-4 rounded-xl outline-none text-white" required>
-                <input type="password" id="reg-password" placeholder="Password (Min 6 chars)" class="input-field w-full p-4 rounded-xl outline-none text-white" minlength="6" required>
-                <button type="submit" id="signup-btn" class="w-full btn-green py-4 rounded-xl uppercase tracking-widest text-sm shadow-lg">Get Started Free</button>
-            </form>
+        <form id="login-form" class="space-y-5 hidden">
+            <input type="email" id="login-email" placeholder="Email Address" class="input-field w-full p-4 rounded-xl" required>
+            <input type="password" id="login-password" placeholder="Password" class="input-field w-full p-4 rounded-xl" required>
+            <button type="submit" id="login-btn" class="w-full btn-green py-4 rounded-xl uppercase tracking-widest text-sm">Login</button>
+        </form>
 
-            <form id="login-form" class="space-y-6 hidden">
-                <input type="email" id="login-email" placeholder="Email Address" class="input-field w-full p-4 rounded-xl outline-none text-white" required>
-                <input type="password" id="login-password" placeholder="Password" class="input-field w-full p-4 rounded-xl outline-none text-white" required>
-                <button type="submit" id="login-btn" class="w-full btn-green py-4 rounded-xl uppercase tracking-widest text-sm shadow-lg">Secure Login</button>
-            </form>
-
-            <div class="relative flex py-8 items-center">
-                <div class="flex-grow border-t border-gray-800"></div>
-                <span class="flex-shrink mx-4 text-gray-500 text-xs font-bold tracking-widest uppercase">Quick Connect</span>
-                <div class="flex-grow border-t border-gray-800"></div>
-            </div>
-
-            <button id="google-btn" class="w-full social-btn flex items-center justify-center gap-3 py-4 rounded-xl font-bold shadow-sm">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-5"> Google Account
-            </button>
+        <div class="relative flex py-6 items-center">
+            <div class="flex-grow border-t border-gray-800"></div>
+            <span class="mx-4 text-gray-500 text-xs font-bold uppercase">OR</span>
+            <div class="flex-grow border-t border-gray-800"></div>
         </div>
+
+        <button id="google-btn" class="w-full bg-white text-black flex items-center justify-center gap-3 py-4 rounded-xl font-bold">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-5"> Google Login
+        </button>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, updateProfile, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
@@ -137,12 +77,21 @@
         const db = getDatabase(app);
         const provider = new GoogleAuthProvider();
 
-        // ১. অটো চেক: ইউজার অলরেডি লগইন থাকলে রিডাইরেক্ট
+        // সেশন ধরে রাখার জন্য সেটআপ
+        setPersistence(auth, browserLocalPersistence);
+
+        // রিডাইরেক্ট ফাংশন
+        const goToDashboard = () => {
+            window.location.replace("dashboard.html");
+        };
+
+        // ইউজার লগইন চেক
         onAuthStateChanged(auth, (user) => {
-            if (user) window.location.href = "dashboard.html";
+            if (user && window.location.pathname.indexOf("dashboard.html") === -1) {
+                goToDashboard();
+            }
         });
 
-        // ২. ডাটাবেসে ইউজার প্রোফাইল ক্রিয়েট করা
         const createUserProfile = async (user, name) => {
             const userRef = ref(db, 'users/' + user.uid);
             const snapshot = await get(userRef);
@@ -156,7 +105,7 @@
             }
         };
 
-        // ৩. সাইন আপ প্রসেস
+        // সাইন আপ
         document.getElementById('signup-form').onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('signup-btn');
@@ -165,21 +114,21 @@
             const password = document.getElementById('reg-password').value;
 
             btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+            btn.innerText = "Creating...";
 
             try {
                 const res = await createUserWithEmailAndPassword(auth, email, password);
                 await updateProfile(res.user, { displayName: name });
                 await createUserProfile(res.user, name);
-                window.location.href = "dashboard.html";
-            } catch (err) { 
+                goToDashboard();
+            } catch (err) {
                 btn.disabled = false;
-                btn.innerText = "Get Started Free";
-                alert(err.message); 
+                btn.innerText = "Create Account";
+                alert(err.message);
             }
         };
 
-        // ৪. লগইন প্রসেস
+        // লগইন
         document.getElementById('login-form').onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('login-btn');
@@ -187,24 +136,24 @@
             const password = document.getElementById('login-password').value;
 
             btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
+            btn.innerText = "Checking...";
 
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                window.location.href = "dashboard.html";
-            } catch (err) { 
+                goToDashboard();
+            } catch (err) {
                 btn.disabled = false;
-                btn.innerText = "Secure Login";
-                alert(err.message); 
+                btn.innerText = "Login";
+                alert(err.message);
             }
         };
 
-        // ৫. গুগল লগইন
+        // গুগল লগইন
         document.getElementById('google-btn').onclick = async () => {
-            try { 
+            try {
                 const res = await signInWithPopup(auth, provider);
                 await createUserProfile(res.user);
-                window.location.href = "dashboard.html";
+                goToDashboard();
             } catch (err) { alert(err.message); }
         };
     </script>
@@ -216,14 +165,12 @@
         lBtn.onclick = () => {
             sForm.classList.add('hidden'); lForm.classList.remove('hidden');
             lBtn.classList.add('border-b-2', 'border-[#00e676]', 'text-white');
-            lBtn.classList.remove('text-gray-500');
             sBtn.classList.remove('border-b-2', 'border-[#00e676]', 'text-white');
             sBtn.classList.add('text-gray-500');
         };
         sBtn.onclick = () => {
             lForm.classList.add('hidden'); sForm.classList.remove('hidden');
             sBtn.classList.add('border-b-2', 'border-[#00e676]', 'text-white');
-            sBtn.classList.remove('text-gray-500');
             lBtn.classList.remove('border-b-2', 'border-[#00e676]', 'text-white');
             lBtn.classList.add('text-gray-500');
         };
