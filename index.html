@@ -25,30 +25,27 @@
 
     <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div class="space-y-8 hidden lg:block">
-            <h1 class="text-5xl font-extrabold leading-tight">Get <span class="text-[#00e676]">paid</span> for watching ads & videos</h1>
-            <p class="text-slate-400 text-lg">Join 100,000+ earners globally and start withdrawing today.</p>
-            <div class="flex items-center gap-4 pt-4">
-                <span class="bg-[#00b67a] text-white px-3 py-1 rounded text-xs font-bold">★ Trustpilot Verified</span>
-            </div>
+            <h1 class="text-5xl font-extrabold leading-tight">Get <span class="text-[#00e676]">paid</span> for watching ads</h1>
+            <p class="text-slate-400 text-lg">Join the fastest growing earning platform.</p>
         </div>
 
         <div class="card-glass p-8 rounded-2xl w-full max-w-md mx-auto shadow-2xl">
             <div class="flex justify-between mb-8 border-b border-gray-800 pb-4">
-                <button id="tab-signup-btn" class="text-xl font-bold text-white border-b-2 border-[#00e676] pb-2 transition-all">Sign Up</button>
-                <button id="tab-login-btn" class="text-xl font-bold text-gray-500 pb-2 transition-all">Login</button>
+                <button id="tab-signup-btn" class="text-xl font-bold text-white border-b-2 border-[#00e676] pb-2">Sign Up</button>
+                <button id="tab-login-btn" class="text-xl font-bold text-gray-500 pb-2">Login</button>
             </div>
 
             <form id="signup-form" class="space-y-5">
                 <input type="text" id="reg-name" placeholder="Full Name" class="w-full bg-[#0d1117] border border-gray-700 p-3 rounded-lg outline-none focus:border-[#00e676] text-white" required>
                 <input type="email" id="reg-email" placeholder="Email Address" class="w-full bg-[#0d1117] border border-gray-700 p-3 rounded-lg outline-none focus:border-[#00e676] text-white" required>
                 <input type="password" id="reg-password" placeholder="Password (Min 6 chars)" class="w-full bg-[#0d1117] border border-gray-700 p-3 rounded-lg outline-none focus:border-[#00e676] text-white" minlength="6" required>
-                <button type="submit" class="w-full btn-green py-3 rounded-lg uppercase tracking-wide">Start earning now</button>
+                <button type="submit" class="w-full btn-green py-3 rounded-lg uppercase tracking-wide">Join Now</button>
             </form>
 
             <form id="login-form" class="space-y-5 hidden">
                 <input type="email" id="login-email" placeholder="Email Address" class="w-full bg-[#0d1117] border border-gray-700 p-3 rounded-lg outline-none focus:border-[#00e676] text-white" required>
                 <input type="password" id="login-password" placeholder="Password" class="w-full bg-[#0d1117] border border-gray-700 p-3 rounded-lg outline-none focus:border-[#00e676] text-white" required>
-                <button type="submit" class="w-full btn-green py-3 rounded-lg uppercase tracking-wide">Login to account</button>
+                <button type="submit" class="w-full btn-green py-3 rounded-lg uppercase tracking-wide">Login</button>
             </form>
 
             <div class="relative flex py-6 items-center">
@@ -57,11 +54,9 @@
                 <div class="flex-grow border-t border-gray-800"></div>
             </div>
 
-            <div class="space-y-3">
-                <button id="google-btn" class="w-full social-btn flex items-center justify-center gap-3 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-all">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-5"> Continue with Google
-                </button>
-            </div>
+            <button id="google-btn" class="w-full social-btn flex items-center justify-center gap-3 py-3 rounded-lg font-semibold">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-5"> Continue with Google
+            </button>
         </div>
     </div>
 
@@ -69,93 +64,68 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // 🚨 আপনার Firebase থেকে এই কনফিগারেশন আপডেট করুন
+        // আপনার প্রোভাইড করা আসল কনফিগারেশন
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "YOUR_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyBfy99qWpkOHd5VO6IIeDHhSxXONnMTXUA",
+            authDomain: "adcashglobal-c5274.firebaseapp.com",
+            projectId: "adcashglobal-c5274",
+            storageBucket: "adcashglobal-c5274.firebasestorage.app",
+            messagingSenderId: "485189038688",
+            appId: "1:485189038688:web:27244eea22a161418c4905",
+            measurementId: "G-VYGC8JV7W0"
         };
 
-        // Initialize
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
-        // ১. অটো চেক: ইউজার লগইন থাকলে ড্যাশবোর্ডে নিয়ে যাবে
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                console.log("Logged in as:", user.email);
-                window.location.href = "dashboard.html"; 
-            }
+            if (user) window.location.href = "dashboard.html";
         });
 
-        // ২. সাইন আপ (Email/Password)
         document.getElementById('signup-form').onsubmit = async (e) => {
             e.preventDefault();
             const name = document.getElementById('reg-name').value;
             const email = document.getElementById('reg-email').value;
             const password = document.getElementById('reg-password').value;
-
             try {
-                const result = await createUserWithEmailAndPassword(auth, email, password);
-                await updateProfile(result.user, { displayName: name });
-                alert("Registration Successful!");
-            } catch (error) {
-                console.error(error);
-                alert("Signup Failed: " + error.message);
-            }
+                const res = await createUserWithEmailAndPassword(auth, email, password);
+                await updateProfile(res.user, { displayName: name });
+                alert("Account Created!");
+            } catch (err) { alert(err.message); }
         };
 
-        // ৩. লগইন (Email/Password)
         document.getElementById('login-form').onsubmit = async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
-
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                alert("Logged In Successfully!");
-            } catch (error) {
-                console.error(error);
-                alert("Login Failed: " + error.message);
-            }
+            } catch (err) { alert(err.message); }
         };
 
-        // ৪. গুগল লগইন
         document.getElementById('google-btn').onclick = async () => {
-            try {
-                await signInWithPopup(auth, provider);
-                // সফল হলে অটোমেটিক dashboard-এ নিয়ে যাবে (onAuthStateChanged এর মাধ্যমে)
-            } catch (error) {
-                console.error(error);
-                alert("Google Login Failed: " + error.message);
-            }
+            try { await signInWithPopup(auth, provider); } 
+            catch (err) { alert(err.message); }
         };
     </script>
 
     <script>
-        const signupForm = document.getElementById('signup-form');
-        const loginForm = document.getElementById('login-form');
-        const tabSignupBtn = document.getElementById('tab-signup-btn');
-        const tabLoginBtn = document.getElementById('tab-login-btn');
+        // UI Tabs switching logic
+        const sForm = document.getElementById('signup-form'), lForm = document.getElementById('login-form');
+        const sBtn = document.getElementById('tab-signup-btn'), lBtn = document.getElementById('tab-login-btn');
 
-        tabLoginBtn.onclick = () => {
-            signupForm.classList.add('hidden');
-            loginForm.classList.remove('hidden');
-            tabLoginBtn.classList.add('border-b-2', 'border-[#00e676]', 'text-white');
-            tabSignupBtn.classList.remove('border-b-2', 'border-[#00e676]', 'text-white');
-            tabSignupBtn.classList.add('text-gray-500');
+        lBtn.onclick = () => {
+            sForm.classList.add('hidden'); lForm.classList.remove('hidden');
+            lBtn.classList.add('border-b-2', 'border-[#00e676]', 'text-white');
+            sBtn.classList.remove('border-b-2', 'border-[#00e676]', 'text-white');
+            sBtn.classList.add('text-gray-500');
         };
-
-        tabSignupBtn.onclick = () => {
-            loginForm.classList.add('hidden');
-            signupForm.classList.remove('hidden');
-            tabSignupBtn.classList.add('border-b-2', 'border-[#00e676]', 'text-white');
-            tabLoginBtn.classList.remove('border-b-2', 'border-[#00e676]', 'text-white');
-            tabLoginBtn.classList.add('text-gray-500');
+        sBtn.onclick = () => {
+            lForm.classList.add('hidden'); sForm.classList.remove('hidden');
+            sBtn.classList.add('border-b-2', 'border-[#00e676]', 'text-white');
+            lBtn.classList.remove('border-b-2', 'border-[#00e676]', 'text-white');
+            lBtn.classList.add('text-gray-500');
         };
     </script>
 </body>
