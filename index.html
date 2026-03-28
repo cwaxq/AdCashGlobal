@@ -31,10 +31,14 @@
             transition: all 0.3s ease; 
             font-weight: 700; 
         }
-        .btn-green:hover { 
+        .btn-green:hover:not(:disabled) { 
             transform: translateY(-3px); 
             box-shadow: 0 10px 20px rgba(0, 230, 118, 0.3);
             filter: brightness(1.1);
+        }
+        .btn-green:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
         .social-btn { 
             background-color: #ffffff; 
@@ -88,22 +92,16 @@
             </div>
 
             <form id="signup-form" class="space-y-6">
-                <div class="relative">
-                    <input type="text" id="reg-name" placeholder="Full Name" class="input-field w-full p-4 rounded-xl outline-none text-white" required>
-                </div>
-                <div class="relative">
-                    <input type="email" id="reg-email" placeholder="Email Address" class="input-field w-full p-4 rounded-xl outline-none text-white" required>
-                </div>
-                <div class="relative">
-                    <input type="password" id="reg-password" placeholder="Password (Min 6 chars)" class="input-field w-full p-4 rounded-xl outline-none text-white" minlength="6" required>
-                </div>
-                <button type="submit" class="w-full btn-green py-4 rounded-xl uppercase tracking-widest text-sm shadow-lg">Get Started Free</button>
+                <input type="text" id="reg-name" placeholder="Full Name" class="input-field w-full p-4 rounded-xl outline-none text-white" required>
+                <input type="email" id="reg-email" placeholder="Email Address" class="input-field w-full p-4 rounded-xl outline-none text-white" required>
+                <input type="password" id="reg-password" placeholder="Password (Min 6 chars)" class="input-field w-full p-4 rounded-xl outline-none text-white" minlength="6" required>
+                <button type="submit" id="signup-btn" class="w-full btn-green py-4 rounded-xl uppercase tracking-widest text-sm shadow-lg">Get Started Free</button>
             </form>
 
             <form id="login-form" class="space-y-6 hidden">
                 <input type="email" id="login-email" placeholder="Email Address" class="input-field w-full p-4 rounded-xl outline-none text-white" required>
                 <input type="password" id="login-password" placeholder="Password" class="input-field w-full p-4 rounded-xl outline-none text-white" required>
-                <button type="submit" class="w-full btn-green py-4 rounded-xl uppercase tracking-widest text-sm shadow-lg">Secure Login</button>
+                <button type="submit" id="login-btn" class="w-full btn-green py-4 rounded-xl uppercase tracking-widest text-sm shadow-lg">Secure Login</button>
             </form>
 
             <div class="relative flex py-8 items-center">
@@ -139,10 +137,12 @@
         const db = getDatabase(app);
         const provider = new GoogleAuthProvider();
 
+        // ১. অটো চেক: ইউজার অলরেডি লগইন থাকলে রিডাইরেক্ট
         onAuthStateChanged(auth, (user) => {
             if (user) window.location.href = "dashboard.html";
         });
 
+        // ২. ডাটাবেসে ইউজার প্রোফাইল ক্রিয়েট করা
         const createUserProfile = async (user, name) => {
             const userRef = ref(db, 'users/' + user.uid);
             const snapshot = await get(userRef);
@@ -156,29 +156,50 @@
             }
         };
 
+        // ৩. সাইন আপ প্রসেস
         document.getElementById('signup-form').onsubmit = async (e) => {
             e.preventDefault();
+            const btn = document.getElementById('signup-btn');
             const name = document.getElementById('reg-name').value;
             const email = document.getElementById('reg-email').value;
             const password = document.getElementById('reg-password').value;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+
             try {
                 const res = await createUserWithEmailAndPassword(auth, email, password);
                 await updateProfile(res.user, { displayName: name });
                 await createUserProfile(res.user, name);
                 window.location.href = "dashboard.html";
-            } catch (err) { alert(err.message); }
+            } catch (err) { 
+                btn.disabled = false;
+                btn.innerText = "Get Started Free";
+                alert(err.message); 
+            }
         };
 
+        // ৪. লগইন প্রসেস
         document.getElementById('login-form').onsubmit = async (e) => {
             e.preventDefault();
+            const btn = document.getElementById('login-btn');
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking...';
+
             try {
                 await signInWithEmailAndPassword(auth, email, password);
                 window.location.href = "dashboard.html";
-            } catch (err) { alert(err.message); }
+            } catch (err) { 
+                btn.disabled = false;
+                btn.innerText = "Secure Login";
+                alert(err.message); 
+            }
         };
 
+        // ৫. গুগল লগইন
         document.getElementById('google-btn').onclick = async () => {
             try { 
                 const res = await signInWithPopup(auth, provider);
