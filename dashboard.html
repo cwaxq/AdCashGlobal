@@ -8,16 +8,18 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body { background-color: #0d1117; font-family: 'Inter', sans-serif; color: white; }
-        /* Active link style */
         .sidebar-item-active { background-color: #161b22; color: #00e676; border-right: 3px solid #00e676; }
         .sidebar-item:hover { background-color: #161b22; color: #00e676; border-right: 3px solid #00e676; }
         .card-bg { background-color: #161b22; border: 1px solid #30363d; }
         .neon-text { color: #00e676; }
         .neon-btn { background-color: #00e676; color: #000; transition: 0.3s; display: block; text-align: center; }
         .neon-btn:hover { box-shadow: 0 0 15px rgba(0, 230, 118, 0.4); transform: translateY(-2px); }
+        #loader { position: fixed; inset: 0; background: #0d1117; z-index: 50; display: flex; items-center: center; justify-content: center; }
     </style>
 </head>
 <body class="flex flex-col md:flex-row min-h-screen">
+
+    <div id="loader"><div class="animate-spin rounded-full h-12 w-12 border-t-2 border-[#00e676]"></div></div>
 
     <nav class="w-full md:w-64 card-bg flex flex-col p-5 space-y-6">
         <div class="text-2xl font-bold flex items-center gap-2 mb-8 cursor-pointer" onclick="location.href='index.html'">
@@ -25,14 +27,11 @@
         </div>
         
         <div class="flex flex-col space-y-2">
-            <a href="index.html" class="sidebar-item sidebar-item-active p-3 rounded-lg flex items-center gap-3 transition-all">
+            <a href="dashboard.html" class="sidebar-item sidebar-item-active p-3 rounded-lg flex items-center gap-3 transition-all">
                 <i class="fas fa-th-large w-5"></i> Dashboard
             </a>
             <a href="tasks.html" class="sidebar-item p-3 rounded-lg flex items-center gap-3 transition-all text-gray-400">
                 <i class="fas fa-tasks w-5"></i> Tasks
-            </a>
-            <a href="refer.html" class="sidebar-item p-3 rounded-lg flex items-center gap-3 transition-all text-gray-400">
-                <i class="fas fa-users w-5"></i> Refer
             </a>
             <a href="wallet.html" class="sidebar-item p-3 rounded-lg flex items-center gap-3 transition-all text-gray-400">
                 <i class="fas fa-wallet w-5"></i> Wallet
@@ -43,13 +42,16 @@
         </div>
 
         <div class="mt-auto p-4 border-t border-gray-800">
-            <div class="flex items-center gap-3">
-                <img src="https://ui-avatars.com/api/?name=User&background=00e676&color=000" class="rounded-full h-10 w-10">
-                <div>
-                    <p class="text-sm font-bold">John Doe</p>
-                    <p class="text-[10px] text-gray-500">USA Account</p>
+            <div class="flex items-center gap-3 mb-4">
+                <img id="user-img" src="https://ui-avatars.com/api/?name=User" class="rounded-full h-10 w-10 border border-[#00e676]">
+                <div class="overflow-hidden">
+                    <p id="user-name" class="text-sm font-bold truncate">Loading...</p>
+                    <p id="user-status" class="text-[10px] text-[#00e676]">Active Account</p>
                 </div>
             </div>
+            <button onclick="logout()" class="w-full text-xs text-red-500 bg-red-500/10 py-2 rounded-lg hover:bg-red-500 hover:text-white transition-all">
+                <i class="fas fa-sign-out-alt mr-1"></i> Logout
+            </button>
         </div>
     </nav>
 
@@ -59,23 +61,23 @@
             <div class="card-bg p-6 rounded-2xl flex justify-between items-center">
                 <div>
                     <p class="text-gray-400 text-xs uppercase">Your Balance</p>
-                    <h2 class="text-3xl font-bold neon-text">$0.0050</h2>
+                    <h2 id="balance-display" class="text-3xl font-bold neon-text">$0.0000</h2>
                 </div>
                 <div class="bg-green-500/10 p-3 rounded-xl"><i class="fas fa-dollar-sign text-[#00e676]"></i></div>
             </div>
             <div class="card-bg p-6 rounded-2xl flex justify-between items-center border-t-2 border-blue-500">
                 <div>
                     <p class="text-gray-400 text-xs uppercase">Today's Earnings</p>
-                    <h2 class="text-3xl font-bold">$0.0015</h2>
+                    <h2 id="today-earning" class="text-3xl font-bold">$0.0000</h2>
                 </div>
                 <div class="bg-blue-500/10 p-3 rounded-xl"><i class="fas fa-chart-line text-blue-500"></i></div>
             </div>
             <div class="card-bg p-6 rounded-2xl flex justify-between items-center border-t-2 border-purple-500">
                 <div>
-                    <p class="text-gray-400 text-xs uppercase">Active Users</p>
-                    <h2 class="text-3xl font-bold">8,775</h2>
+                    <p class="text-gray-400 text-xs uppercase">Referral Count</p>
+                    <h2 id="ref-count" class="text-3xl font-bold">0</h2>
                 </div>
-                <div class="bg-purple-500/10 p-3 rounded-xl"><i class="fas fa-globe text-purple-500"></i></div>
+                <div class="bg-purple-500/10 p-3 rounded-xl"><i class="fas fa-users text-purple-500"></i></div>
             </div>
         </header>
 
@@ -86,20 +88,18 @@
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="card-bg p-8 rounded-3xl text-center group hover:border-[#00e676] transition-all">
-                    <div class="h-16 w-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                    <div class="h-16 w-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110">
                         <i class="fas fa-play text-red-500 text-2xl"></i>
                     </div>
                     <h4 class="text-lg font-bold mb-2">Watch Video</h4>
-                    <p class="text-gray-400 text-sm mb-6">Earn up to $0.005 per video ad</p>
                     <a href="watch-video.html" class="neon-btn w-full font-bold py-2 rounded-xl">Watch Now</a>
                 </div>
 
                 <div class="card-bg p-8 rounded-3xl text-center group hover:border-[#00e676] transition-all">
-                    <div class="h-16 w-16 bg-yellow-500/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:rotate-45 transition-transform">
+                    <div class="h-16 w-16 bg-yellow-500/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:rotate-45">
                         <i class="fas fa-dharmachakra text-yellow-500 text-2xl"></i>
                     </div>
                     <h4 class="text-lg font-bold mb-2">Lucky Spin</h4>
-                    <p class="text-gray-400 text-sm mb-6">Win surprise rewards every hour</p>
                     <a href="lucky-spin.html" class="neon-btn w-full font-bold py-2 rounded-xl">Spin Wheel</a>
                 </div>
 
@@ -108,65 +108,60 @@
                         <i class="fas fa-keyboard text-blue-500 text-2xl"></i>
                     </div>
                     <h4 class="text-lg font-bold mb-2">Solve Captcha</h4>
-                    <p class="text-gray-400 text-sm mb-6">Fast and easy small rewards</p>
                     <a href="captcha.html" class="neon-btn w-full font-bold py-2 rounded-xl">Solve Now</a>
-                </div>
-            </div> 
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-                <div class="card-bg p-8 rounded-3xl text-center group hover:border-[#00e676] transition-all">
-                    <div class="h-16 w-16 bg-cyan-500/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                        <i class="fas fa-calendar-check text-cyan-500 text-2xl"></i>
-                    </div>
-                    <h4 class="text-lg font-bold mb-2">Daily Bonus</h4>
-                    <p class="text-gray-400 text-sm mb-6">Claim your free daily reward in one click</p>
-                    <a href="daily-bonus.html" class="neon-btn w-full font-bold py-2 rounded-xl">Claim Now</a>
-                </div>
-
-                <div class="card-bg p-8 rounded-3xl text-center group hover:border-[#00e676] transition-all">
-                    <div class="h-16 w-16 bg-purple-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-calculator text-purple-500 text-2xl"></i>
-                    </div>
-                    <h4 class="text-lg font-bold mb-2">Math Quiz</h4>
-                    <p class="text-gray-400 text-sm mb-6">Solve simple math and get paid instantly</p>
-                    <a href="math-quiz.html" class="neon-btn w-full font-bold py-2 rounded-xl">Start Quiz</a>
-                </div>
-
-                <div class="card-bg p-8 rounded-3xl text-center group hover:border-[#00e676] transition-all">
-                    <div class="h-16 w-16 bg-orange-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-ticket-alt text-orange-500 text-2xl"></i>
-                    </div>
-                    <h4 class="text-lg font-bold mb-2">Promo Code</h4>
-                    <p class="text-gray-400 text-sm mb-6">Enter secret codes from our community</p>
-                    <a href="promo-code.html" class="neon-btn w-full font-bold py-2 rounded-xl">Redeem Code</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="card-bg rounded-2xl overflow-hidden">
-            <div class="p-4 bg-gray-800/50 flex justify-between items-center">
-                <span class="font-bold"><i class="fas fa-medal text-yellow-500"></i> Global Ranking</span>
-                <a href="ranking.html" class="text-xs text-[#00e676] hover:underline">View All</a>
-            </div>
-            <div class="p-4 space-y-4">
-                <div class="flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <span class="text-gray-500 font-bold w-4">1</span>
-                        <p class="text-sm">Alex_USA</p>
-                    </div>
-                    <p class="text-sm font-bold text-[#00e676]">$450.50</p>
-                </div>
-                <div class="flex justify-between items-center">
-                    <div class="flex items-center gap-3">
-                        <span class="text-gray-500 font-bold w-4">2</span>
-                        <p class="text-sm">Kamal_BD</p>
-                    </div>
-                    <p class="text-sm font-bold text-[#00e676]">$120.20</p>
                 </div>
             </div>
         </section>
 
     </main>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // 🚨 YOUR CONFIG HERE
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        // Authentication & Data Sync
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Update Sidebar Profile
+                document.getElementById('user-name').innerText = user.displayName || "User Account";
+                if(user.photoURL) document.getElementById('user-img').src = user.photoURL;
+
+                // Sync Database (Balance & Earnings)
+                const userRef = ref(db, 'users/' + user.uid);
+                onValue(userRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        document.getElementById('balance-display').innerText = '$' + (data.balance || 0).toFixed(4);
+                        document.getElementById('today-earning').innerText = '$' + (data.today_earning || 0).toFixed(4);
+                        document.getElementById('ref-count').innerText = data.referrals || 0;
+                    }
+                });
+
+                document.getElementById('loader').style.display = 'none';
+            } else {
+                window.location.href = "index.html"; // Redirect to login
+            }
+        });
+
+        // Logout Function
+        window.logout = () => {
+            signOut(auth).then(() => window.location.href = "index.html");
+        };
+    </script>
 </body>
 </html>
