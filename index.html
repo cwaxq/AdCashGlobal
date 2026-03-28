@@ -26,7 +26,7 @@
     <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div class="space-y-8 hidden lg:block">
             <h1 class="text-5xl font-extrabold leading-tight">Get <span class="text-[#00e676]">paid</span> for watching ads</h1>
-            <p class="text-slate-400 text-lg">Join the fastest growing earning platform.</p>
+            <p class="text-slate-400 text-lg">Join the fastest growing earning platform and start earning today.</p>
         </div>
 
         <div class="card-glass p-8 rounded-2xl w-full max-w-md mx-auto shadow-2xl">
@@ -63,8 +63,8 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // আপনার প্রোভাইড করা আসল কনফিগারেশন
         const firebaseConfig = {
             apiKey: "AIzaSyBfy99qWpkOHd5VO6IIeDHhSxXONnMTXUA",
             authDomain: "adcashglobal-c5274.firebaseapp.com",
@@ -72,17 +72,35 @@
             storageBucket: "adcashglobal-c5274.firebasestorage.app",
             messagingSenderId: "485189038688",
             appId: "1:485189038688:web:27244eea22a161418c4905",
-            measurementId: "G-VYGC8JV7W0"
+            measurementId: "G-VYGC8JV7W0",
+            databaseURL: "https://adcashglobal-c5274-default-rtdb.firebaseio.com"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getDatabase(app);
         const provider = new GoogleAuthProvider();
 
+        // ইউজার লগইন থাকলে ড্যাশবোর্ডে নিয়ে যাবে
         onAuthStateChanged(auth, (user) => {
             if (user) window.location.href = "dashboard.html";
         });
 
+        // নতুন ইউজার তৈরি হলে ডাটাবেসে প্রোফাইল সেভ করা
+        const createUserProfile = async (user, name) => {
+            const userRef = ref(db, 'users/' + user.uid);
+            const snapshot = await get(userRef);
+            if (!snapshot.exists()) {
+                await set(userRef, {
+                    username: name || user.displayName || "User",
+                    email: user.email,
+                    balance: 0.00,
+                    joinedAt: new Date().toISOString()
+                });
+            }
+        };
+
+        // সাইন আপ লজিক
         document.getElementById('signup-form').onsubmit = async (e) => {
             e.preventDefault();
             const name = document.getElementById('reg-name').value;
@@ -91,10 +109,12 @@
             try {
                 const res = await createUserWithEmailAndPassword(auth, email, password);
                 await updateProfile(res.user, { displayName: name });
-                alert("Account Created!");
+                await createUserProfile(res.user, name);
+                alert("Account Created Successfully!");
             } catch (err) { alert(err.message); }
         };
 
+        // লগইন লজিক
         document.getElementById('login-form').onsubmit = async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
@@ -104,14 +124,17 @@
             } catch (err) { alert(err.message); }
         };
 
+        // গুগল লগইন লজিক
         document.getElementById('google-btn').onclick = async () => {
-            try { await signInWithPopup(auth, provider); } 
+            try { 
+                const res = await signInWithPopup(auth, provider);
+                await createUserProfile(res.user);
+            } 
             catch (err) { alert(err.message); }
         };
     </script>
 
     <script>
-        // UI Tabs switching logic
         const sForm = document.getElementById('signup-form'), lForm = document.getElementById('login-form');
         const sBtn = document.getElementById('tab-signup-btn'), lBtn = document.getElementById('tab-login-btn');
 
